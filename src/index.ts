@@ -114,7 +114,7 @@ function maxRectangle(R: number, C: number, A: number[][]): [area: number, top: 
 }
 
 // Driver code 
-function Main() {
+function main() {
     let R = 8;
     let C = 4;
 
@@ -133,4 +133,4 @@ function Main() {
     console.log(result, top, bottom, left, right)
 }
 
-Main()
+main()
