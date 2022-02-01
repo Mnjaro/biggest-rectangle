@@ -1,104 +1,136 @@
-const game = [
-    [2, 1, 5, 6, 2, 3],
-    // [1, 0, 1, 1, 1],
-    // [1, 1, 1, 1, 1],
-    // [1, 0, 0, 1, 0],
-]
 
-// For each row, we need to find the biggest area of rectangle considering the height of the previous row
-// For each rectangle, we need to find the left limit and right limit
-// Area = ( ( Right limit - Left limit ) + 1 ) * height
-// Area = (         Width                    ) * height
+// Finds the maximum area under the 
+// histogram represented by histogram. 
+// See below article for details. 
+// https:// www.geeksforgeeks.org/largest-rectangle-under-histogram/ 
+function maxHist(C: number, row: number[]): [area: number, left: number, right: number] {
+    // Create an empty stack. The stack 
+    // holds indexes of hist[] array. 
+    // The bars stored in stack are always 
+    // in increasing order of their heights. 
+    const result: number[] = []
 
-// Notations
-// Area: Area
-// Right Limit: rl
-// Left Limit: ll
-// height: height
-// width: width
-// row: row
+    let top_val: number // Top of stack 
+    let left: number // Top of stack 
 
-// We will be converting each row into a Histogram
+    let max_area = 0; // Initialize max area in current row (or histogram) 
+    let max_left = -1;
+    let max_right = -1;
 
-// 1st Row : 1 0 1 0 0
-// 2nd Row : 2 0 2 1 1    => Current row values + the ones from on top (If the current row value is 0, we do not do the sum, the height will be 0)
-// 3rd Row : 3 1 3 2 2
-// 4th Row : 4 0 4 3 0
+    let area = 0; // Initialize area with current top 
 
-// Simplified Step by Step thought process ( those steps are found in the code comment )
-// Get the game
-// Seperate each row
-// Convert each row in a histogram
-// For each histogram, loop through the rectangles
-// for each rectangle, get it's ll and rl
-// for each rectangle, calculate its area
-// always store the max area and update it when needed
+    // Run through all bars of 
+    // given histogram (or row) 
+    let i = 0;
+    while (i < C) {
+        // If this bar is higher than the 
+        // bar on top stack, push it to stack 
+        if (result.length == 0 || row[result[result.length - 1]] <= row[i]) {
+            result.push(i++);
+        }
+        else {
+            // If this bar is lower than top 
+            // of stack, then calculate area of 
+            // rectangle with stack top as 
+            // the smallest (or minimum height) 
+            // bar. 'i' is 'right index' for 
+            // the top and element before 
+            // top in stack is 'left index' 
+            left = result[result.length - 1];
+            top_val = row[left];
+            result.pop();
+            area = top_val * i;
 
-function main(game: number[][]) {
-    // Get each row of the game from left to right
-    for (let rowIndex = 0; rowIndex < game.length; rowIndex++) {
-        const row = game[rowIndex]
-        // Get each row's histogram so we can work on the different rectangles
-        const rowHistogram = rowToHistogram(rowIndex, game)
-        // Loop in the histogram to work on the ll and rl of each rectangle and calculate the area
-        const ll = []
-        const rl = []
+            if (result.length > 0) {
+                left = result[result.length - 1] + 1;
+                area = top_val * (i - left);
+            }
 
-        const stack: number[] = []
-        // get left limits
-        for (let leftIndex = 0; leftIndex < rowHistogram.length; leftIndex++) {
-            if (!stack.length) {
-                ll.push(0)
-                stack.push(0)
-            } else {
-                if (rowHistogram[leftIndex] < rowHistogram[stack[stack.length - 1]]) {
-                    stack.pop()
-                    if (!stack.length) {
-                        ll.push(0)
-                    } else {
-                        while (stack.length) {
-                            if (rowHistogram[leftIndex] < rowHistogram[stack[stack.length - 1]]) {
-                                stack.pop()
-                            } else {
-                                ll.push(stack[stack.length - 1] + 1)
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    ll.push(stack[stack.length - 1] + 1)
-                }
-                stack.push(leftIndex)
+            if (area > max_area) {
+                max_area = area;
+                max_left = left;
+                max_right = i - 1;
             }
         }
-        console.log("Left Limit")
-        console.log(ll)
     }
-}
 
-
-
-
-
-
-
-
-
-
-
-
-function rowToHistogram(rowIndex: number, game: number[][]): number[] {
-    const row = game[rowIndex]
-    const previousRows = game.slice(0, rowIndex)
-    if (!previousRows) return row
-    return row.map((element: number, index: number) => {
-        if (element === 0) return element
-        let sumOfElements = element
-        for (const previousRow of previousRows) {
-            sumOfElements += previousRow[index]
+    // Now pop the remaining bars from 
+    // stack and calculate area with 
+    // every popped bar as the smallest bar 
+    while (result.length > 0) {
+        left = result[result.length - 1];
+        top_val = row[left];
+        result.pop();
+        area = top_val * i;
+        if (result.length > 0) {
+            left = result[result.length - 1] + 1;
+            area = top_val * (i - left);
         }
-        return sumOfElements
-    })
+
+        if (area > max_area) {
+            max_area = area;
+            max_left = left;
+            max_right = C - 1;
+        }
+    }
+    return [max_area, max_left, max_right];
 }
 
-main(game)
+// Returns area of the largest 
+// rectangle with all 1s in A[][] 
+function maxRectangle(R: number, C: number, A: number[][]): [area: number, top: number, bottom: number, left: number, right: number] {
+    let top = 0;
+    let bottom = 0;
+
+    // Calculate area for first row 
+    // and initialize it as result 
+    let [result, left, right] = maxHist(C, A[0]);
+
+    // iterate over row to find 
+    // maximum rectangular area 
+    // considering each row as histogram 
+    for (let i = 1; i < R; i++) {
+        for (let j = 0; j < C; j++) {
+            // if A[i][j] is 1 then 
+            // add A[i -1][j] 
+            if (A[i][j] == 1) {
+                A[i][j] += A[i - 1][j];
+            }
+        }
+
+        let [tmp_result, tmp_left, tmp_right] = maxHist(C, A[i]);
+        // Update result if area with current 
+        // row (as last row of rectangle) is more
+        if (tmp_result > result) {
+            left = tmp_left;
+            right = tmp_right;
+            bottom = i;
+            result = tmp_result;
+            top = bottom - (result / (right - left + 1)) + 1;
+        }
+    }
+
+    return [result, top, bottom, left, right];
+}
+
+// Driver code 
+function Main() {
+    let R = 8;
+    let C = 4;
+
+    let A = [
+        [0, 1, 1, 0],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 0, 0],
+        [1, 1, 1, 0],
+        [1, 1, 1, 0],
+        [1, 1, 1, 0],
+        [1, 1, 1, 1]
+    ]
+
+    var [result, top, bottom, left, right] = maxRectangle(R, C, A);
+    console.log(result, top, bottom, left, right)
+}
+
+Main()
