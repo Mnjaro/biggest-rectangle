@@ -9,7 +9,7 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Post()
-  updateGame(@Body() game: UpdateGameDTO): Game { // update return type
-    return this.appService.updateGame(game)
+  updateGame(@Body() updateGameDTO: UpdateGameDTO): Game { // update return type
+    return this.appService.updateGame(updateGameDTO)
   }
 }
