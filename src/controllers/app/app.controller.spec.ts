@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { UpdateGameDTO } from '../src/dtos/game.dto'
-import { AppController } from '../src/app.controller'
-import { AppService } from '../src/app.service'
+import { UpdateGameDTO } from '../../dtos/game.dto'
+import { AppController } from './app.controller'
+import { AppService } from '../../services/app/app.service'
 
 describe('AppController', () => {
   let appController: AppController

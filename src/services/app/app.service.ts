@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { Game } from './@types/game.types'
-import { UpdateGameDTO } from './dtos/game.dto'
+import { Game } from '../../@types/game.types'
+import { UpdateGameDTO } from '../../dtos/game.dto'
 
 @Injectable()
 export class AppService {
