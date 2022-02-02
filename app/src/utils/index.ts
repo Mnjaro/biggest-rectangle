@@ -1,14 +1,12 @@
 
 // Finds the maximum area under the 
 // histogram represented by histogram. 
-// See below article for details. 
-// https:// www.geeksforgeeks.org/largest-rectangle-under-histogram/ 
 function maxHist(C: number, row: number[]): [area: number, left: number, right: number] {
     // Create an empty stack. The stack 
     // holds indexes of hist[] array. 
     // The bars stored in stack are always 
     // in increasing order of their heights. 
-    const result: number[] = []
+    const stack: number[] = []
 
     let top_val: number // Top of stack 
     let left: number // Top of stack 
@@ -22,11 +20,12 @@ function maxHist(C: number, row: number[]): [area: number, left: number, right: 
     // Run through all bars of 
     // given histogram (or row) 
     let i = 0;
+    // We loop on each column of the histogram
     while (i < C) {
         // If this bar is higher than the 
         // bar on top stack, push it to stack 
-        if (result.length == 0 || row[result[result.length - 1]] <= row[i]) {
-            result.push(i++);
+        if (stack.length == 0 || row[stack[stack.length - 1]] <= row[i]) {
+            stack.push(i++);
         }
         else {
             // If this bar is lower than top 
@@ -36,13 +35,13 @@ function maxHist(C: number, row: number[]): [area: number, left: number, right: 
             // bar. 'i' is 'right index' for 
             // the top and element before 
             // top in stack is 'left index' 
-            left = result[result.length - 1];
+            left = stack[stack.length - 1];
             top_val = row[left];
-            result.pop();
+            stack.pop();
             area = top_val * i;
 
-            if (result.length > 0) {
-                left = result[result.length - 1] + 1;
+            if (stack.length > 0) {
+                left = stack[stack.length - 1] + 1;
                 area = top_val * (i - left);
             }
 
@@ -57,13 +56,13 @@ function maxHist(C: number, row: number[]): [area: number, left: number, right: 
     // Now pop the remaining bars from 
     // stack and calculate area with 
     // every popped bar as the smallest bar 
-    while (result.length > 0) {
-        left = result[result.length - 1];
+    while (stack.length > 0) {
+        left = stack[stack.length - 1];
         top_val = row[left];
-        result.pop();
+        stack.pop();
         area = top_val * i;
-        if (result.length > 0) {
-            left = result[result.length - 1] + 1;
+        if (stack.length > 0) {
+            left = stack[stack.length - 1] + 1;
             area = top_val * (i - left);
         }
 
