@@ -8,7 +8,7 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Post()
-  updateGame(@Body() updateGameDTO: UpdateGameDTO): UpdatedGameRes { // update return type
+  updateGame(@Body() updateGameDTO: UpdateGameDTO): UpdatedGameRes {
     const [area, top, bottom, left, right] = this.appService.updateGame(updateGameDTO)
 
     return {
