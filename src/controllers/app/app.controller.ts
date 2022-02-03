@@ -1,6 +1,4 @@
 import { Body, Controller, Get, Post, Req } from '@nestjs/common'
-import { Request } from 'express'
-import { BiggestRectangle, Game } from '../../@types/game.types'
 import { AppService } from '../../services/app/app.service'
 import { UpdateGameDTO } from '../../dtos/game.dto'
 import { UpdatedGameRes } from 'src/@types/app-controller.types'

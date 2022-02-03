@@ -1,5 +1,5 @@
 
-export class BiggestRectangleUtils {
+class BiggestRectangleUtils {
 
     // Finds the maximum area under the 
     // histogram represented by histogram. 
@@ -114,3 +114,7 @@ export class BiggestRectangleUtils {
         return [result, top, bottom, left, right]
     }
 }
+
+const _biggestRectangleUtils = new BiggestRectangleUtils()
+
+export { BiggestRectangleUtils, _biggestRectangleUtils }
