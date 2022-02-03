@@ -16,7 +16,7 @@ describe('AppController', () => {
   })
 
   describe('root', () => {
-    it('should return a 2d matrix game of the same size as the parameter', () => {
+    it('should return the coordinates of the biggest rectangle and the area as a JSON type object', () => {
       let game = new UpdateGameDTO()
       game.game = [
         [0, 1, 1, 0],
@@ -29,7 +29,7 @@ describe('AppController', () => {
         [1, 1, 1, 1]
       ]
 
-      expect(appController.updateGame(game)).toBe(game.game)
+      expect(appController.updateGame(game)).toMatchObject({ area: 14, top: 1, bottom: 7, left: 0, right: 1 })
     })
   })
 })
