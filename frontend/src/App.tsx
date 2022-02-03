@@ -69,12 +69,6 @@ function App() {
       <div>
         Max Area: {maxRect && maxRect.area ? maxRect.area : 0}
       </div>
-      <div>
-        <button onClick={() => {
-          setGame(gameGrid)
-          setMaxRect({ area: 0 })
-        }}>Reset</button>
-      </div>
     </div>
   );
 }
