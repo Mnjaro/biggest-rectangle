@@ -16,4 +16,4 @@ RUN cp -r ./frontend/build/* ./backend/public
 
 EXPOSE 3001
 
-CMD cd backend && npm run start:dev
+CMD cd backend && npm run prebuild && npm run build && npm run start:prod
