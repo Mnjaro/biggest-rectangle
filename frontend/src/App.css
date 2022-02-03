@@ -46,3 +46,14 @@
   border: 1px solid #fff;
   background-color: #282c34;
 }
+
+.game-cell-maxRect {
+  border: 1px solid #fff;
+  background-color: #f54542;
+}
+
+button {
+  padding: 10px;
+  margin-top: 20px;
+  font-size: 0.7em;
+}
