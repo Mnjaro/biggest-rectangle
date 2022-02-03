@@ -12,7 +12,7 @@ COPY frontend ./frontend/
 COPY backend ./backend/
 
 RUN cd ./frontend && npm run build
-RUN cp -r ./frontend/build/* ./backend/public
+RUN mkdir ./backend/public && cp -r ./frontend/build/* ./backend/public
 
 EXPOSE 3001
 
